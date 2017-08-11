@@ -1,0 +1,28 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  VoteSpacesTabs:
+    Properties:
+      CodeUri: s3://ranman-code/cec80cc3d06b1ae5a6dabb5a901b01f5
+      Environment:
+        Variables:
+          TABLE_NAME:
+            Ref: VotesTable
+      Events:
+        GetVotes:
+          Properties:
+            Method: get
+            Path: /
+          Type: Api
+        Vote:
+          Properties:
+            Method: post
+            Path: /
+          Type: Api
+      Handler: lambda_function.lambda_handler
+      Policies: AmazonDynamoDBFullAccess
+      Runtime: python3.6
+      Timeout: 20
+    Type: AWS::Serverless::Function
+  VotesTable:
+    Type: AWS::Serverless::SimpleTable
+Transform: AWS::Serverless-2016-10-31

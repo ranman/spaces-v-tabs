@@ -1,0 +1,27 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::Serverless-2016-10-31
+Resources:
+  VotesTable:
+    Type: AWS::Serverless::SimpleTable
+  VoteSpacesTabs:
+    Type: AWS::Serverless::Function
+    Properties:
+      Timeout: 20
+      Handler: lambda_function.lambda_handler
+      Policies: AmazonDynamoDBFullAccess
+      Runtime: python3.6
+      Environment:
+        Variables:
+          TABLE_NAME:
+            Ref: VotesTable
+      Events:
+        GetVotes:
+          Properties:
+            Method: get
+            Path: /
+          Type: Api
+        Vote:
+          Properties:
+            Method: post
+            Path: /
+          Type: Api
